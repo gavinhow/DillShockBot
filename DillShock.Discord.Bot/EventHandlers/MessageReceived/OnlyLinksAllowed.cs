@@ -18,7 +18,8 @@ public class OnlyLinksAllowed : IMessageReceived
     public async Task MessageReceived(IMessage message)
     {
         // TODO: Restrict to certain channels
-        if (!message.Author.IsBot && _onlyLinksAllowedOptions.ChannelNames.Contains(message.Channel.Name) && !IsUrl(message
+        if (!message.Author.IsBot && (_onlyLinksAllowedOptions.ChannelNames.Contains(message.Channel.Name) || 
+        _onlyLinksAllowedOptions.ChannelNames.Contains(message.Channel.Id.ToString())) && !IsUrl(message
         .Content) )
         {
             await message.DeleteAsync();
