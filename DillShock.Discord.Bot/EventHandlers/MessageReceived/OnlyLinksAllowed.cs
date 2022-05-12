@@ -1,18 +1,28 @@
 using System.Text.RegularExpressions;
+using DillShock.Discord.Bot.Settings;
 using Discord;
+using Microsoft.Extensions.Options;
 
 namespace DillShock.Discord.Bot.EventHandlers.MessageReceived;
 
-public static class OnlyLinksAllowed
+public class OnlyLinksAllowed : IMessageReceived
 {
     public static int DELETE_MESSAGE_DELAY = 10000;
-    public static async Task MessageReceived(IMessage message)
+    private readonly OnlyLinksAllowedOptions _onlyLinksAllowedOptions;
+
+    public OnlyLinksAllowed(IOptions<OnlyLinksAllowedOptions> options)
+    {
+        _onlyLinksAllowedOptions = options.Value;
+    }
+    
+    public async Task MessageReceived(IMessage message)
     {
         // TODO: Restrict to certain channels
-        if (!IsUrl(message.Content) && !message.Author.IsBot)
+        if (!message.Author.IsBot && _onlyLinksAllowedOptions.ChannelNames.Contains(message.Channel.Name) && !IsUrl(message
+        .Content) )
         {
             await message.DeleteAsync();
-            await SendRichEmbedAsyncAndDelete(message.Channel);
+            SendRichEmbedAsyncAndDelete(message.Channel);
         }
     }
 

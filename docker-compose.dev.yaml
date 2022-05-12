@@ -1,0 +1,9 @@
+version: "3.8"
+
+services:
+  dillshock-bot:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    volumes:
+      - ./DillShock.Discord.Bot/appsettings.local.json:/app/appsettings.json
