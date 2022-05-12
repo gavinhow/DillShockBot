@@ -3,4 +3,5 @@ version: "3.8"
 services:
   dillshock-bot:
     volumes:
-      - ./appsettings.local.json:/app/appsettings.json
+      - ./appsettings.json:/app/appsettings.json
+    restart: always
